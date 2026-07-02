@@ -56,10 +56,8 @@ export default function FormLogin() {
 
       router.push("/");
 
-      console.log("AFTER PUSH");
-      document.cookie;
-      Object.keys(localStorage);
-      Object.keys(localStorage);
+      console.log("COOKIE", document.cookie);
+      console.log("LOCAL STORAGE KEYS", Object.keys(localStorage));
     } catch (err) {
       console.error(err);
       toast.error("خطا در ارتباط با سرور");
