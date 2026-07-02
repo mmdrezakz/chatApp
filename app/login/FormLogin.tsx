@@ -17,35 +17,49 @@ export default function FormLogin() {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // اعتبارسنجی ساده
-    if (!email || !password) {
-      toast.error("لطفاً ایمیل و رمز عبور را وارد کنید");
+
+    const cleanEmail = email.trim();
+    const cleanPassword = password.trim();
+
+    if (!cleanEmail) {
+      toast.error("ایمیل را وارد کنید");
       return;
     }
+
+    if (!cleanPassword) {
+      toast.error("رمز عبور را وارد کنید");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: cleanEmail,
+        password: cleanPassword,
       });
 
       if (error) {
-        console.log(error.message);
-        toast.error("یکی از شناسه ها را اشتباه وارد کرده اید.");
+        toast.error(error.message);
         return;
       }
 
-      router.push("/");
+      if (!data.session) {
+        toast.error("ورود انجام نشد");
+        return;
+      }
+
       toast.success("ورود موفق");
-    } catch (error) {
+
+      router.refresh();
+      router.push("/");
+    } catch (err) {
+      console.error(err);
       toast.error("خطا در ارتباط با سرور");
-      setLoading(false);
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <form
       onSubmit={handleLogin}

@@ -1,8 +1,8 @@
 "use client";
+
 import React, { useState } from "react";
 import Button from "../components/ui/Button";
 import Link from "next/link";
-
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import LoadingForm from "../components/ui/loading/LoadingForm";
@@ -16,42 +16,48 @@ export default function Form() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // اعتبارسنجی
-    if (!username || !fullName || !phone || !email || !password) {
-      toast.error("لطفاً همه فیلدها را پر کنید");
-      return;
-    }
-
-    if (password.length < 6) {
-      toast.error("رمز عبور باید حداقل ۶ کاراکتر باشد");
-      return;
-    }
-
-    if (phone.length < 10) {
-      toast.error("شماره تلفن معتبر نیست");
-      return;
-    }
-
     setLoading(true);
 
     try {
-      // 1. ثبت نام در Supabase Auth
+      console.log("🔍 Email:", email.trim());
+      console.log("🔍 Password length:", password.length);
+
       const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
+        email: email.trim(),
+        password: password,
+        options: {
+          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/verify-email`,
+          data: {
+            username: username.trim(),
+            full_name: fullName.trim(),
+            phone: phone.trim(),
+          },
+        },
       });
+      console.log("DATA:", data);
+      console.log("ERROR:", error);
+      console.log("🔍 Response:", { data, error });
 
       if (error) {
+        console.error("❌ Error details:", {
+          message: error.message,
+          status: error.status,
+          name: error.name,
+        });
+
         const errorMessages: Record<string, string> = {
-          "User already registered": "این ایمیل قبلاً ثبت نام کرده است",
+          "User already registered": "این ایمیل قبلاً ثبت‌نام کرده است",
           "Password should be at least 6 characters":
             "رمز عبور باید حداقل ۶ کاراکتر باشد",
-          "Email not confirmed": "ایمیل تایید نشده است",
+          "Invalid email": "ایمیل معتبر نیست",
         };
-        toast.error(errorMessages[error.message] || error.message);
+
+        toast.error(
+          errorMessages[error.message] || error.message || "خطا در ثبت‌نام",
+        );
         setLoading(false);
         return;
       }
@@ -62,50 +68,45 @@ export default function Form() {
         return;
       }
 
-      // 2. ایجاد پروفایل در جدول profiles
-      const { error: profileError } = await supabase.from("profiles").insert({
-        id: data.user.id,
-        username,
-        full_name: fullName,
-        phone,
-        email: email,
-        created_at: new Date().toISOString(),
-      });
+      console.log("✅ User created:", data.user.id);
 
-      if (profileError) {
-        console.error("Profile error:", profileError);
-        toast.error("مشکل در ایجاد پروفایل");
-        setLoading(false);
-        return;
-      }
+      // ذخیره اطلاعات برای بعد از تایید ایمیل
+      localStorage.setItem("pending_email", email.trim());
+      localStorage.setItem(
+        "pending_profile",
+        JSON.stringify({
+          id: data.user.id,
+          username: username.trim(),
+          full_name: fullName.trim(),
+          phone: phone.trim(),
+          email: email.trim(),
+        }),
+      );
 
-      toast.success("ثبت نام با موفقیت انجام شد! 🎉");
-
-      // 3. هدایت به صفحه اصلی
-      setTimeout(() => {
-        router.push("/");
-        router.refresh();
-      }, 1500);
-    } catch (err) {
-      console.error("Registration error:", err);
-      toast.error("خطا در ارتباط با سرور");
-      setLoading(false);
+      toast.success("📧 ایمیل تایید ارسال شد! لطفاً ایمیل خود را بررسی کنید.");
+      router.push("/check-email");
+    } catch (err: any) {
+      console.error("❌ Catch error:", err);
+      toast.error(err.message || "خطا در ارتباط با سرور");
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <form
       onSubmit={handleRegister}
       className="space-y-4 bg-card shadow-md shadow-shadow p-5 rounded-2xl"
     >
       <p className="mb-6 font-bold text-2xl text-center">ثبت نام</p>
+
       <input
         type="text"
         placeholder="نام کاربری"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        className="p-3 w-full"
+        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full transition-colors"
+        disabled={loading}
       />
 
       <input
@@ -113,7 +114,8 @@ export default function Form() {
         placeholder="نام و نام خانوادگی"
         value={fullName}
         onChange={(e) => setFullName(e.target.value)}
-        className="p-3 w-full"
+        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full transition-colors"
+        disabled={loading}
       />
 
       <input
@@ -121,7 +123,8 @@ export default function Form() {
         placeholder="شماره تلفن"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
-        className="p-3 w-full"
+        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full transition-colors"
+        disabled={loading}
       />
 
       <input
@@ -129,7 +132,8 @@ export default function Form() {
         placeholder="ایمیل"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="p-3 w-full"
+        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full transition-colors"
+        disabled={loading}
       />
 
       <input
@@ -137,7 +141,8 @@ export default function Form() {
         placeholder="رمز عبور"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="p-3 w-full"
+        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full transition-colors"
+        disabled={loading}
       />
 
       {loading ? (
@@ -147,9 +152,10 @@ export default function Form() {
           ثبت نام
         </Button>
       )}
+
       <div className="mt-6 text-center">
         <span>قبلاً ثبت نام کرده‌اید؟ </span>
-        <Link href={"/login"}>
+        <Link href="/login">
           <Button className="mx-2 py-1 rounded-sm w-10 font-bold">ورود</Button>
         </Link>
       </div>
