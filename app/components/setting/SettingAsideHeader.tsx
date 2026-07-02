@@ -3,7 +3,7 @@ import ThemeToggle from "../theme/ThemeToggle";
 
 export default function SettingAsideHeader() {
   return (
-    <AsideWrapper text="تنظیمات">
+    <AsideWrapper className={""} text="تنظیمات">
       <ThemeToggle />
     </AsideWrapper>
   );

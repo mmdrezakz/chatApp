@@ -13,7 +13,7 @@ export default function Button({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`${className} hover:scale-110 active:scale-95 transition-all duration-200 bg-button rounded-md  text-foreground`}
+      className={`${className} hover:scale-110 active:scale-95 transition-all duration-200 bg-button rounded-md  text-foreground `}
     >
       {children}
     </button>

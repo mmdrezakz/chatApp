@@ -1,19 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #18181b;
-  --card: #f4f4f5;
-  --shadow-color: #18181b;
-  --button: #010147;
-  --button-hover: #01012e;
-  --message: #bedbff;
-  --border: #010147;
+  --background: #fafafa;
+  --foreground: #111827;
+
+  --card: #ffffff;
+
+  --border: #e5e7eb;
+
+  --button: #2563eb;
+  --button-hover: #1d4ed8;
   --noise-pattern: radial-gradient(
     circle at 1px 1px,
     rgba(0, 0, 0, 0.35) 1px,
     transparent 0
   );
+  --message: #dbeafe;
+
+  --shadow-color: rgba(0, 0, 0, 0.08);
 }
 
 [data-theme="dark"] {
@@ -29,7 +33,7 @@
     --border: #fafafa;
     --noise-pattern: radial-gradient(
       circle at 1px 1px,
-      rgba(255, 255, 255, 0.1) 1px,
+      rgba(230, 230, 230, 0.1) 1px,
       transparent 0
     );
   }
@@ -37,16 +41,21 @@
 .dark {
   --background: #09090b;
   --foreground: #fafafa;
-  --card: #39393f;
-  --shadow-color: #28282b;
-  --button: #6b6b6b;
-  --button-hover: #535353;
-  --border: #fafafa;
+
+  --card: #18181b;
+
+  --border: #27272a;
   --noise-pattern: radial-gradient(
     circle at 1px 1px,
-    rgba(255, 255, 255, 0.1) 1px,
+    rgba(209, 206, 206, 0.096) 1px,
     transparent 0
   );
+  --button: #3b82f6;
+  --button-hover: #2563eb;
+
+  --message: #172554;
+
+  --shadow-color: rgba(0, 0, 0, 0.4);
 }
 
 @theme inline {
@@ -81,4 +90,20 @@ input {
   transition: all 0.2s ease;
   outline: 1px solid var(--border);
   border-radius: 10px;
+}
+.scrollbar-custom::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: #64748b;
+  border-radius: 9999px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: #475569;
 }

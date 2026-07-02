@@ -4,7 +4,7 @@ import AsideWrapper from "../../ui/wrapper/AsideWrapper";
 
 export default function HeaderAside() {
   return (
-    <AsideWrapper text="گفت و گو ها">
+    <AsideWrapper className={""} text="گفت و گو ">
       <ThemeToggle />
     </AsideWrapper>
   );
