@@ -19,7 +19,7 @@ export default function Message() {
         </div>
 
         {/* پیام دیگران */}
-        <div className="relative self-end bg-message shadow-md px-4 py-2 rounded-2xl max-w-xs text-black">
+        <div className="relative self-end bg-message shadow-md px-4 py-2 rounded-2xl max-w-xs">
           <div
             className="top-1/2 -left-2 absolute bg-message w-3 h-3 rotate-180 -translate-y-1/2"
             style={{ clipPath: "polygon(0 0, 100% 50%, 0 100%)" }}
