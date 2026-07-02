@@ -2,25 +2,83 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #18181b;
+  --card: #f4f4f5;
+  --shadow-color: #18181b;
+  --button: #010147;
+  --button-hover: #01012e;
+  --message: #bedbff;
+  --border: #010147;
+  --noise-pattern: radial-gradient(
+    circle at 1px 1px,
+    rgba(0, 0, 0, 0.35) 1px,
+    transparent 0
+  );
+}
+
+[data-theme="dark"] {
+  :root {
+    --background: #09090b;
+    --foreground: #fafafa;
+    --card: #39393f;
+    --shadow-color: #28282b;
+    --button: rgb(107, 107, 107);
+    --button-hover: #535353;
+    --message: #193cb8;
+
+    --border: #fafafa;
+    --noise-pattern: radial-gradient(
+      circle at 1px 1px,
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 0
+    );
+  }
+}
+.dark {
+  --background: #09090b;
+  --foreground: #fafafa;
+  --card: #39393f;
+  --shadow-color: #28282b;
+  --button: #6b6b6b;
+  --button-hover: #535353;
+  --border: #fafafa;
+  --noise-pattern: radial-gradient(
+    circle at 1px 1px,
+    rgba(255, 255, 255, 0.1) 1px,
+    transparent 0
+  );
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-circle: var(--noise-pattern);
+  --color-shadow: var(--shadow-color);
+  --color-button: var(--button);
+  --color-message: var(--message);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+  background-color: var(--button);
+  cursor: pointer;
+  color: white;
+  text-align: center;
+  transition: all 0.25s ease;
+  &:hover {
+    background-color: var(--button-hover);
+    transform: scale(0.99);
+  }
+}
+input {
+  border: 1px solid var(--color-border);
+  transition: all 0.2s ease;
+  outline: 1px solid var(--border);
+  border-radius: 10px;
 }
