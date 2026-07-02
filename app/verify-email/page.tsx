@@ -104,7 +104,7 @@ export default function VerifyEmailPage() {
     };
 
     const cleanupPromise = initialize();
-
+    console.log("URL HASH", window.location.hash);
     return () => {
       cleanupPromise?.then?.((cleanup) => cleanup?.());
     };

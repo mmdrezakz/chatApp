@@ -32,13 +32,13 @@ export default function FormLogin() {
     }
 
     setLoading(true);
-
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: cleanEmail,
         password: cleanPassword,
       });
-
+      console.log("LOGIN DATA", data);
+      console.log("LOGIN ERROR", error);
       if (error) {
         toast.error(error.message);
         return;
@@ -52,7 +52,14 @@ export default function FormLogin() {
       toast.success("ورود موفق");
 
       router.refresh();
+      console.log("BEFORE PUSH");
+
       router.push("/");
+
+      console.log("AFTER PUSH");
+      document.cookie;
+      Object.keys(localStorage);
+      Object.keys(localStorage);
     } catch (err) {
       console.error(err);
       toast.error("خطا در ارتباط با سرور");
