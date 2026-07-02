@@ -7,44 +7,32 @@ import SettingAside from "../../setting/SettingAsideHeader";
 import SettingAsideMain from "../../setting/SettingAsideMain";
 import LogoutButton from "../../logout/LogOut";
 import { useAuth } from "@/app/Contexts/AuthContent";
-
-import { PanelRightOpen } from "lucide-react";
 import CloseAside from "../../CloseAside/CloseAside";
-import Button from "../../ui/Button";
+import BackgroundWrapper from "../../register/backgroundWrapper";
 
-export default function Aside() {
+export default function Aside({
+  showAside,
+  setShowAside,
+}: {
+  showAside: boolean;
+  setShowAside: (bool: boolean) => void;
+}) {
   const [ShowSetting, setShowSetting] = useState(false);
-  const [showAside, setShowAside] = useState(false);
   const { logout } = useAuth();
 
   function handleShowSetting() {
     setShowSetting((s) => !s);
   }
-  if (showAside) {
-    return (
-      <aside className="relative flex flex-col border-border border-l w-40 sm:w-56 md:w-64 lg:w-72 h-screen">
-        {ShowSetting ? (
-          <>
-            <SettingAside />
-            <div className="flex-1 overflow-y-auto">
-              <SettingAsideMain />
-              <div className="flex justify-center items-center">
-                <LogoutButton onLogout={logout} />
-                <CloseAside setShowAside={setShowAside} />
-                <SettingIcon
-                  ShowSetting={ShowSetting}
-                  handleShowSetting={handleShowSetting}
-                />
-              </div>
-            </div>
-          </>
-        ) : (
-          <>
-            <HeaderAside />
-            <div className="flex-1 overflow-y-auto">
-              <ChatsAside />
-            </div>
-            <div className="flex justify-center items-center">
+
+  // حذف شرط if (showAside) - همیشه رندر کن
+  return (
+    <aside className="flex flex-col border-border border-l w-full sm:w-80 h-full">
+      {ShowSetting ? (
+        <>
+          <SettingAside />
+          <div className="flex-1 overflow-y-auto">
+            <SettingAsideMain />
+            <div className="flex justify-center items-center gap-2 p-2">
               <LogoutButton onLogout={logout} />
               <CloseAside setShowAside={setShowAside} />
               <SettingIcon
@@ -52,18 +40,24 @@ export default function Aside() {
                 handleShowSetting={handleShowSetting}
               />
             </div>
-          </>
-        )}
-      </aside>
-    );
-  } else {
-    return (
-      <Button
-        onClick={() => setShowAside(true)}
-        className="top-10 right-4 z-50 absolute hover:shadow-xl p-3 rounded-2xl hover:scale-110 transition-all -translate-y-1/2 cursor-pointer"
-      >
-        <PanelRightOpen />
-      </Button>
-    );
-  }
+          </div>
+        </>
+      ) : (
+        <>
+          <HeaderAside />
+          <div className="flex-1 overflow-y-auto">
+            <ChatsAside />
+          </div>
+          <div className="flex justify-center items-center gap-2 p-2">
+            <LogoutButton onLogout={logout} />
+            <CloseAside setShowAside={setShowAside} />
+            <SettingIcon
+              ShowSetting={ShowSetting}
+              handleShowSetting={handleShowSetting}
+            />
+          </div>
+        </>
+      )}
+    </aside>
+  );
 }

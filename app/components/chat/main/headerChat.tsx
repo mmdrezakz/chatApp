@@ -25,7 +25,7 @@ export default function HeaderChat() {
         className="relative cursor-pointer"
       >
         <AsideWrapper
-          className={"flex justify-start  items-center gap-3 relative"}
+          className={"flex justify-start  items-center gap-3 relative "}
           text=""
         >
           <div className="flex justify-center items-center gap-3 mr-15 sm:mr-20">
