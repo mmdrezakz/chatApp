@@ -5,9 +5,12 @@ import ChatsAside from "./ChatsAside";
 import HeaderAside from "./HeaderAside";
 import SettingAside from "../../setting/SettingAsideHeader";
 import SettingAsideMain from "../../setting/SettingAsideMain";
+import LogoutButton from "../../logout/LogOut";
+import { useAuth } from "@/app/Contexts/AuthContent";
 
 export default function Aside() {
   const [ShowSetting, setShowSetting] = useState(false);
+  const { logout } = useAuth();
 
   function handleShowSetting() {
     setShowSetting((s) => !s);
@@ -23,6 +26,7 @@ export default function Aside() {
         <>
           <HeaderAside />
           <ChatsAside />
+          <LogoutButton onLogout={logout} />
         </>
       )}
       <SettingIcon
