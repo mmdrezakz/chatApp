@@ -1,10 +1,7 @@
-import React from "react";
-import BackgroundWrapper from "../../register/backgroundWrapper";
-
 export default function Message() {
   return (
     <>
-      <section className="flex flex-col flex-1 gap-3 bg-card p-4 overflow-y-auto">
+      <section className="flex flex-col flex-1 gap-3 bg-card/80 p-4 overflow-y-auto">
         {/* پیام خودمان */}
         <div className="relative self-start bg-background shadow-md px-4 py-2 rounded-2xl max-w-xs">
           <div
