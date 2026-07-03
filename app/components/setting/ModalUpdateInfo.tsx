@@ -1,5 +1,5 @@
-import { X } from "lucide-react";
-import LoadingForm from "../ui/loading/LoadingForm";
+import { Loader, X } from "lucide-react";
+
 import { ModalUpdateInfoProps } from "./type";
 import { useAuth } from "@/app/Contexts/AuthContent";
 import toast from "react-hot-toast";
@@ -69,9 +69,12 @@ export default function ModalUpdateInfo({
           className="p-2 border rounded w-full"
         />
         {editLoading ? (
-          <LoadingForm />
+          <button className="flex justify-center items-center gap-2 mt-6 p-2 rounded w-full">
+            <Loader />
+            <span>در حال ذخیره</span>
+          </button>
         ) : (
-          <button onClick={handleUpdate} className="mt-3 p-2 rounded w-full">
+          <button onClick={handleUpdate} className="mt-6 p-2 rounded w-full">
             ذخیره
           </button>
         )}
