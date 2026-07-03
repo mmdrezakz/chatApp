@@ -24,8 +24,6 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  console.log("PROXY USER:", user?.email);
-
   const path = request.nextUrl.pathname;
 
   const publicRoutes = [

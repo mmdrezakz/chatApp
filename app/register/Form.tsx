@@ -83,7 +83,7 @@ export default function Form() {
         return;
       }
 
-      console.log("USER CREATED:", data.user.id);
+      // console.log("USER CREATED:", data.user.id);
 
       // ساخت پروفایل
       const { error: profileError } = await supabase.from("profiles").insert({
@@ -103,6 +103,9 @@ export default function Form() {
         toast.error("خطا در ساخت پروفایل");
         return;
       }
+      // ✅ منتظر می‌مانیم تا پروفایل در دیتابیس ثبت شود
+      // و سپس سشن را رفرش می‌کنیم
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // لاگین خودکار
       const { error: loginError } = await supabase.auth.signInWithPassword({
@@ -118,11 +121,13 @@ export default function Form() {
         router.push("/login");
         return;
       }
+      // ✅ منتظر می‌مانیم تا سشن به‌روز شود
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       toast.success("ثبت نام موفق");
-
+      // ✅ از router.replace استفاده کنید تا از بازگشت به صفحه ثبت‌نام جلوگیری شود
+      router.replace("/");
       router.refresh();
-      router.push("/");
     } catch (error) {
       console.error("REGISTER ERROR:", error);
       toast.error("خطا در ارتباط با سرور");

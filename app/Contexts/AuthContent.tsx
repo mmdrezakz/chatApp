@@ -18,7 +18,6 @@ export default function AuthProvider({
   const router = useRouter();
 
   async function getUserProfile() {
-    console.log("GET USER PROFILE CALLED");
     try {
       setLoading(true);
       const {
@@ -31,15 +30,13 @@ export default function AuthProvider({
         setLoading(false);
         return;
       }
-      console.log("AUTH USER", authUser);
+
       const { data: profile, error: profileError } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", authUser.id)
         .single();
 
-      console.log("PROFILE", profile);
-      console.log("PROFILE ERROR", profileError);
       if (profileError) {
         console.error("Error fetching profile:", profileError);
         setUser(null);
@@ -68,8 +65,6 @@ export default function AuthProvider({
   };
 
   useEffect(() => {
-    console.log("AUTH PROVIDER MOUNTED");
-
     getUserProfile();
 
     const {
