@@ -8,7 +8,11 @@ import SettingAsideMain from "../../setting/SettingAsideMain";
 import LogoutButton from "../../logout/LogOut";
 import { useAuth } from "@/app/Contexts/AuthContent";
 
-export default function Aside() {
+export default function Aside({
+  setShowAside,
+}: {
+  setShowAside: (s: boolean) => void;
+}) {
   const [ShowSetting, setShowSetting] = useState(false);
   const { logout } = useAuth();
 
@@ -37,7 +41,7 @@ export default function Aside() {
         <>
           <HeaderAside />
           <div className="flex-1 overflow-y-auto">
-            <ChatsAside />
+            <ChatsAside setShowAside={setShowAside} />
           </div>
           <div className="flex justify-center items-center gap-2 p-2">
             <LogoutButton onLogout={logout} />
