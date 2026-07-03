@@ -1,4 +1,3 @@
-import BackgroundWrapper from "../components/register/backgroundWrapper";
 import WrapperForm from "../components/ui/wrapper/WrapperForm";
 import Form from "./Form";
 

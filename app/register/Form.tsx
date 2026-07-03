@@ -1,93 +1,131 @@
 "use client";
 
 import React, { useState } from "react";
-import Button from "../components/ui/Button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+
+import Button from "../components/ui/Button";
 import LoadingForm from "../components/ui/loading/LoadingForm";
 import { supabase } from "../lib/supabase/client";
 
 export default function Form() {
+  const router = useRouter();
+
   const [username, setUsername] = useState("");
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!username.trim()) {
+      toast.error("نام کاربری را وارد کنید");
+      return;
+    }
+
+    if (!email.trim()) {
+      toast.error("ایمیل را وارد کنید");
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error("رمز عبور باید حداقل ۶ کاراکتر باشد");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      console.log("🔍 Email:", email.trim());
-      console.log("🔍 Password length:", password.length);
-
-      const { data, error } = await supabase.auth.signUp({
+      const cleanData = {
+        username: username.trim(),
+        full_name: fullName.trim(),
+        phone: phone.trim(),
         email: email.trim(),
-        password: password,
+      };
+
+      // ثبت نام
+      const { data, error } = await supabase.auth.signUp({
+        email: cleanData.email,
+        password,
         options: {
-          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/verify-email`,
           data: {
-            username: username.trim(),
-            full_name: fullName.trim(),
-            phone: phone.trim(),
+            username: cleanData.username,
+            full_name: cleanData.full_name,
+            phone: cleanData.phone,
           },
         },
       });
-      console.log("DATA:", data);
-      console.log("ERROR:", error);
-      console.log("🔍 Response:", { data, error });
 
       if (error) {
-        console.error("❌ Error details:", {
-          message: error.message,
-          status: error.status,
-          name: error.name,
-        });
+        console.error("SIGNUP ERROR:", error);
 
         const errorMessages: Record<string, string> = {
-          "User already registered": "این ایمیل قبلاً ثبت‌نام کرده است",
+          "User already registered": "این ایمیل قبلاً ثبت شده است",
           "Password should be at least 6 characters":
             "رمز عبور باید حداقل ۶ کاراکتر باشد",
           "Invalid email": "ایمیل معتبر نیست",
         };
 
         toast.error(
-          errorMessages[error.message] || error.message || "خطا در ثبت‌نام",
+          errorMessages[error.message] ?? error.message ?? "خطا در ثبت نام",
         );
-        setLoading(false);
+
         return;
       }
 
       if (!data.user) {
-        toast.error("مشکل در ایجاد کاربر");
-        setLoading(false);
+        toast.error("کاربر ایجاد نشد");
         return;
       }
 
-      console.log("✅ User created:", data.user.id);
+      console.log("USER CREATED:", data.user.id);
 
-      // ذخیره اطلاعات برای بعد از تایید ایمیل
-      localStorage.setItem("pending_email", email.trim());
-      localStorage.setItem(
-        "pending_profile",
-        JSON.stringify({
-          id: data.user.id,
-          username: username.trim(),
-          full_name: fullName.trim(),
-          phone: phone.trim(),
-          email: email.trim(),
-        }),
-      );
+      // ساخت پروفایل
+      const { error: profileError } = await supabase.from("profiles").insert({
+        id: data.user.id,
+        username: cleanData.username,
+        full_name: cleanData.full_name,
+        phone: cleanData.phone,
+        email: cleanData.email,
+      });
 
-      toast.success("📧 ایمیل تایید ارسال شد! لطفاً ایمیل خود را بررسی کنید.");
-      router.push("/check-email");
-    } catch (err: any) {
-      console.error("❌ Catch error:", err);
-      toast.error(err.message || "خطا در ارتباط با سرور");
+      if (profileError) {
+        console.error(
+          "PROFILE INSERT ERROR:",
+          JSON.stringify(profileError, null, 2),
+        );
+
+        toast.error("خطا در ساخت پروفایل");
+        return;
+      }
+
+      // لاگین خودکار
+      const { error: loginError } = await supabase.auth.signInWithPassword({
+        email: cleanData.email,
+        password,
+      });
+
+      if (loginError) {
+        console.error("AUTO LOGIN ERROR:", loginError);
+
+        toast.success("ثبت نام انجام شد. لطفاً وارد حساب خود شوید.");
+
+        router.push("/login");
+        return;
+      }
+
+      toast.success("ثبت نام موفق");
+
+      router.refresh();
+      router.push("/");
+    } catch (error) {
+      console.error("REGISTER ERROR:", error);
+      toast.error("خطا در ارتباط با سرور");
     } finally {
       setLoading(false);
     }
@@ -105,8 +143,8 @@ export default function Form() {
         placeholder="نام کاربری"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full transition-colors"
         disabled={loading}
+        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full"
       />
 
       <input
@@ -114,8 +152,8 @@ export default function Form() {
         placeholder="نام و نام خانوادگی"
         value={fullName}
         onChange={(e) => setFullName(e.target.value)}
-        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full transition-colors"
         disabled={loading}
+        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full"
       />
 
       <input
@@ -123,8 +161,8 @@ export default function Form() {
         placeholder="شماره تلفن"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
-        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full transition-colors"
         disabled={loading}
+        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full"
       />
 
       <input
@@ -132,8 +170,8 @@ export default function Form() {
         placeholder="ایمیل"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full transition-colors"
         disabled={loading}
+        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full"
       />
 
       <input
@@ -141,8 +179,8 @@ export default function Form() {
         placeholder="رمز عبور"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full transition-colors"
         disabled={loading}
+        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full"
       />
 
       {loading ? (
@@ -155,6 +193,7 @@ export default function Form() {
 
       <div className="mt-6 text-center">
         <span>قبلاً ثبت نام کرده‌اید؟ </span>
+
         <Link href="/login">
           <Button className="mx-2 py-1 rounded-sm w-10 font-bold">ورود</Button>
         </Link>

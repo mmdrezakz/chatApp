@@ -10,7 +10,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={Toggle}
-      className="flex justify-center items-center rounded-full w-10 h-10 hover:scale-110 active:scale-95 transition-all duration-200"
+      className="left-5 absolute flex justify-center items-center rounded-full w-10 h-10 hover:scale-110 active:scale-95 transition-all duration-200"
       aria-label="Toggle theme"
     >
       {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}

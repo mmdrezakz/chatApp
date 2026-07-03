@@ -24,21 +24,21 @@ export default function HeaderChat() {
         onClick={() => setIsModalOpen(true)}
         className="relative cursor-pointer"
       >
-        <AsideWrapper
-          className={"flex justify-start  items-center gap-3 relative "}
-          text=""
-        >
-          <div className="flex justify-center items-center gap-3 mr-15 sm:mr-20">
-            <div className="flex justify-center items-center bg-background/50 shadow-shadow shadow-sm rounded-full w-10 h-10 font-bold text-سئ">
-              عکس
-            </div>
-            <h3 className="font-semibold">علی</h3>
-            <span className="text-green-500 text-sm">آنلاین</span>
+        <div className="flex justify-start items-center gap-3 mr-15 sm:mr-20 py-5 w-fit">
+          <div className="flex justify-center items-center bg-card shadow-shadow shadow-sm rounded-full w-10 h-10 font-bold text-xs">
+            عکس
           </div>
-          <Button className="left-5 absolute" type="button">
-            <ChevronLeft />
-          </Button>
-        </AsideWrapper>
+          <h3 className="bg-card px-4 py-1 rounded-2xl font-semibold">علی</h3>
+          <span className="bg-card px-2 py-1 rounded-2xl text-green-500 text-sm">
+            آنلاین
+          </span>
+        </div>
+        <Button
+          className="top-1/2 left-5 absolute -translate-y-1/2"
+          type="button"
+        >
+          <ChevronLeft />
+        </Button>
       </form>
       {isModalOpen && (
         <ModalProfile

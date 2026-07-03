@@ -1,7 +1,7 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-
 import Button from "../components/ui/Button";
 import Link from "next/link";
 import LoadingForm from "../components/ui/loading/LoadingForm";
@@ -32,15 +32,15 @@ export default function FormLogin() {
     }
 
     setLoading(true);
+
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: cleanEmail,
         password: cleanPassword,
       });
-      console.log("LOGIN DATA", data);
-      console.log("LOGIN ERROR", error);
+
       if (error) {
-        toast.error(error.message);
+        toast.error("ایمیل یا رمز عبور اشتباه است");
         return;
       }
 
@@ -52,31 +52,29 @@ export default function FormLogin() {
       toast.success("ورود موفق");
 
       router.refresh();
-      console.log("BEFORE PUSH");
-
       router.push("/");
-
-      console.log("COOKIE", document.cookie);
-      console.log("LOCAL STORAGE KEYS", Object.keys(localStorage));
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
       toast.error("خطا در ارتباط با سرور");
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <form
       onSubmit={handleLogin}
       className="space-y-4 bg-card shadow-md shadow-shadow p-5 rounded-2xl"
     >
       <p className="mb-6 font-bold text-2xl text-center">ورود</p>
+
       <input
         type="email"
         placeholder="ایمیل"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="p-3 w-full"
+        disabled={loading}
+        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full"
       />
 
       <input
@@ -84,7 +82,8 @@ export default function FormLogin() {
         placeholder="رمز عبور"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="p-3 w-full"
+        disabled={loading}
+        className="bg-transparent p-3 border border-border focus:border-primary rounded-lg focus:outline-none w-full"
       />
 
       {loading ? (
@@ -98,7 +97,7 @@ export default function FormLogin() {
       <div className="mt-6 text-center">
         <span>حساب ندارید؟ </span>
 
-        <Link href={"/register"}>
+        <Link href="/register">
           <Button className="mx-2 py-1 rounded-sm w-20 font-bold">
             ثبت نام
           </Button>

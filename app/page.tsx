@@ -7,7 +7,7 @@ import { PanelRightOpen } from "lucide-react";
 import BackgroundWrapper from "./components/register/backgroundWrapper";
 
 export default function Page() {
-  const [showAside, setShowAside] = useState(false);
+  const [showAside, setShowAside] = useState(true);
 
   return (
     <BackgroundWrapper>
@@ -24,7 +24,7 @@ export default function Page() {
           bg-background
           `}
         >
-          <Aside setShowAside={setShowAside} showAside={showAside} />
+          <Aside />
         </div>
 
         {/* MainAreaChat - همیشه نمایش داده میشه */}

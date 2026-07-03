@@ -7,16 +7,8 @@ import SettingAside from "../../setting/SettingAsideHeader";
 import SettingAsideMain from "../../setting/SettingAsideMain";
 import LogoutButton from "../../logout/LogOut";
 import { useAuth } from "@/app/Contexts/AuthContent";
-import CloseAside from "../../CloseAside/CloseAside";
-import BackgroundWrapper from "../../register/backgroundWrapper";
 
-export default function Aside({
-  showAside,
-  setShowAside,
-}: {
-  showAside: boolean;
-  setShowAside: (bool: boolean) => void;
-}) {
+export default function Aside() {
   const [ShowSetting, setShowSetting] = useState(false);
   const { logout } = useAuth();
 
@@ -24,7 +16,6 @@ export default function Aside({
     setShowSetting((s) => !s);
   }
 
-  // حذف شرط if (showAside) - همیشه رندر کن
   return (
     <aside className="flex flex-col border-border border-l w-full sm:w-80 h-full">
       {ShowSetting ? (
@@ -34,7 +25,7 @@ export default function Aside({
             <SettingAsideMain />
             <div className="flex justify-center items-center gap-2 p-2">
               <LogoutButton onLogout={logout} />
-              <CloseAside setShowAside={setShowAside} />
+
               <SettingIcon
                 ShowSetting={ShowSetting}
                 handleShowSetting={handleShowSetting}
@@ -50,7 +41,6 @@ export default function Aside({
           </div>
           <div className="flex justify-center items-center gap-2 p-2">
             <LogoutButton onLogout={logout} />
-            <CloseAside setShowAside={setShowAside} />
             <SettingIcon
               ShowSetting={ShowSetting}
               handleShowSetting={handleShowSetting}
