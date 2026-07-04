@@ -107,7 +107,6 @@ export default function Form() {
       // و سپس سشن را رفرش می‌کنیم
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // لاگین خودکار
       const { error: loginError } = await supabase.auth.signInWithPassword({
         email: cleanData.email,
         password,
