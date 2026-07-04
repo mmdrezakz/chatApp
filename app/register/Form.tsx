@@ -190,9 +190,9 @@ export default function Form() {
       {loading ? (
         <LoadingForm />
       ) : (
-        <Button type="submit" className="py-3 w-full">
+        <button type="submit" className="py-3 rounded-sm w-full">
           ثبت نام
-        </Button>
+        </button>
       )}
 
       <div className="mt-6 text-center">

@@ -89,9 +89,9 @@ export default function FormLogin() {
       {loading ? (
         <LoadingForm />
       ) : (
-        <Button type="submit" className="py-3 w-full">
+        <button type="submit" className="py-3 rounded-sm w-full">
           ورود
-        </Button>
+        </button>
       )}
 
       <div className="mt-6 text-center">
