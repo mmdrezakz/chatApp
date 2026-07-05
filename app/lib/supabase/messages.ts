@@ -37,3 +37,31 @@ export async function getMessages(conversationId: string) {
 
   return data;
 }
+export async function updateMessage(messageId: string, content: string) {
+  const { data, error } = await supabase
+    .from("messages")
+    .update({
+      content,
+    })
+    .eq("id", messageId)
+    .select()
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+export async function deleteMessage(messageId: string) {
+  const { error } = await supabase
+    .from("messages")
+    .delete()
+    .eq("id", messageId);
+
+  if (error) {
+    throw error;
+  }
+
+  return true;
+}

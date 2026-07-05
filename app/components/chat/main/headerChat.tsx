@@ -21,6 +21,9 @@ const userProfile: UserProfile = {
 export default function HeaderChat() {
   const { state } = useChat();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  if (!state.selectedUser) {
+    return null;
+  }
   return (
     <>
       <form

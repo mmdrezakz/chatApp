@@ -13,6 +13,7 @@ export interface ChatState {
   selectedUser: UserProfile | null;
   conversationId: string | null;
   messages: MessageType[];
+  editingMessage: MessageType | null;
 }
 export type ChatAction =
   | {
@@ -30,4 +31,20 @@ export type ChatAction =
   | {
       type: "SET_MESSAGES";
       payload: MessageType[];
+    }
+  | {
+      type: "ADD_MESSAGE";
+      payload: MessageType;
+    }
+  | {
+      type: "UPDATE_MESSAGE";
+      payload: MessageType;
+    }
+  | {
+      type: "DELETE_MESSAGE";
+      payload: string;
+    }
+  | {
+      type: "SET_EDITING_MESSAGE";
+      payload: MessageType | null;
     };
