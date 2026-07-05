@@ -6,6 +6,8 @@ export const initialState: ChatState = {
   conversationId: null,
   messages: [],
   editingMessage: null,
+  unreadCounts: {},
+  loadingMessages: false,
 };
 
 export function chatReducer(state: ChatState, action: ChatAction): ChatState {
@@ -28,6 +30,10 @@ export function chatReducer(state: ChatState, action: ChatAction): ChatState {
         messages: action.payload,
       };
     case "ADD_MESSAGE":
+      if (state.messages.some((msg) => msg.id === action.payload.id)) {
+        return state;
+      }
+
       return {
         ...state,
         messages: [...state.messages, action.payload],
@@ -48,6 +54,50 @@ export function chatReducer(state: ChatState, action: ChatAction): ChatState {
       return {
         ...state,
         messages: state.messages.filter((msg) => msg.id !== action.payload),
+      };
+    case "UPDATE_USER":
+      return {
+        ...state,
+
+        users: state.users.map((user) =>
+          user.id === action.payload.id ? action.payload : user,
+        ),
+
+        selectedUser:
+          state.selectedUser?.id === action.payload.id
+            ? action.payload
+            : state.selectedUser,
+      };
+
+    case "INCREMENT_UNREAD":
+      return {
+        ...state,
+        unreadCounts: {
+          ...state.unreadCounts,
+          [action.payload]: (state.unreadCounts[action.payload] || 0) + 1,
+        },
+      };
+
+    case "CLEAR_UNREAD":
+      const counts = { ...state.unreadCounts };
+
+      delete counts[action.payload];
+
+      return {
+        ...state,
+        unreadCounts: counts,
+      };
+    case "RESET_CHAT":
+      return initialState;
+    case "SET_LOADING_MESSAGES":
+      return {
+        ...state,
+        loadingMessages: action.payload,
+      };
+    case "SET_UNREAD_COUNTS":
+      return {
+        ...state,
+        unreadCounts: action.payload,
       };
     default:
       return state;

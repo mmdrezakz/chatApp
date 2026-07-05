@@ -14,6 +14,8 @@ export interface ChatState {
   conversationId: string | null;
   messages: MessageType[];
   editingMessage: MessageType | null;
+  unreadCounts: Record<string, number>;
+  loadingMessages: boolean;
 }
 export type ChatAction =
   | {
@@ -22,7 +24,7 @@ export type ChatAction =
     }
   | {
       type: "SET_SELECTED_USER";
-      payload: UserProfile;
+      payload: UserProfile | null;
     }
   | {
       type: "SET_CONVERSATION";
@@ -47,4 +49,27 @@ export type ChatAction =
   | {
       type: "SET_EDITING_MESSAGE";
       payload: MessageType | null;
+    }
+  | {
+      type: "UPDATE_USER";
+      payload: UserProfile;
+    }
+  | {
+      type: "INCREMENT_UNREAD";
+      payload: string;
+    }
+  | {
+      type: "CLEAR_UNREAD";
+      payload: string;
+    }
+  | {
+      type: "RESET_CHAT";
+    }
+  | {
+      type: "SET_LOADING_MESSAGES";
+      payload: boolean;
+    }
+  | {
+      type: "SET_UNREAD_COUNTS";
+      payload: Record<string, number>;
     };

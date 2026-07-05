@@ -9,30 +9,24 @@ export async function findConversation(
     .select("conversation_id")
     .eq("user_id", currentUserId);
 
-  if (error) {
-    throw error;
-  }
+  if (error) throw error;
 
   const conversationIds = currentUserConversations.map(
     (item) => item.conversation_id,
   );
 
-  if (!conversationIds.length) {
-    return null;
-  }
+  if (!conversationIds.length) return null;
 
-  const { data: targetConversation, error: targetError } = await supabase
+  const { data, error: targetError } = await supabase
     .from("conversation_members")
     .select("conversation_id")
     .eq("user_id", targetUserId)
     .in("conversation_id", conversationIds)
-    .maybeSingle();
+    .limit(1);
 
-  if (targetError) {
-    throw targetError;
-  }
+  if (targetError) throw targetError;
 
-  return targetConversation?.conversation_id ?? null;
+  return data?.[0]?.conversation_id ?? null;
 }
 
 export async function createConversation(

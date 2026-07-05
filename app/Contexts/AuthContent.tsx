@@ -45,6 +45,14 @@ export default function AuthProvider({
       }
 
       setUser(profile);
+      //آنلاین کردن کاربر
+      await supabase
+        .from("profiles")
+        .update({
+          is_online: true,
+          last_seen: new Date().toISOString(),
+        })
+        .eq("id", authUser.id);
     } catch (error) {
       console.error("Error:", error);
       setUser(null);
@@ -54,7 +62,18 @@ export default function AuthProvider({
   }
 
   const logout = async () => {
+    if (user) {
+      await supabase
+        .from("profiles")
+        .update({
+          is_online: false,
+          last_seen: new Date().toISOString(),
+        })
+        .eq("id", user.id);
+    }
+
     await supabase.auth.signOut();
+
     setUser(null);
     router.push("/login");
     router.refresh();
@@ -81,7 +100,41 @@ export default function AuthProvider({
       subscription.unsubscribe();
     };
   }, []);
+  //چک کردن لحظه ای آنلاین بود
+  useEffect(() => {
+    if (!user) return;
 
+    const handleOffline = async () => {
+      await supabase
+        .from("profiles")
+        .update({
+          is_online: false,
+          last_seen: new Date().toISOString(),
+        })
+        .eq("id", user.id);
+    };
+
+    window.addEventListener("beforeunload", handleOffline);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleOffline);
+    };
+  }, [user]);
+  //آپدیت کردن لست سین به صورت مرتب
+  useEffect(() => {
+    if (!user) return;
+
+    const interval = setInterval(async () => {
+      await supabase
+        .from("profiles")
+        .update({
+          last_seen: new Date().toISOString(),
+        })
+        .eq("id", user.id);
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [user]);
   return (
     <AuthContext.Provider
       value={{ user, loading, getUserProfile, logout, refreshUser }}

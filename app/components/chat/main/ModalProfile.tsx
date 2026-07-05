@@ -1,17 +1,12 @@
 import { Calendar, Mail, MapPin, Phone, User, X } from "lucide-react";
-import { UserProfile } from "./type";
+
 import Button from "../../ui/Button";
 import { toPersianNumber } from "@/app/lib/supabase/Persion/numberUtils";
 import { useChat } from "@/app/Contexts/ChatContext/ChatContext";
 import Image from "next/image";
+import { convertToPersianDate } from "@/app/lib/supabase/Persion/date";
 
-export default function ModalProfile({
-  user,
-  onClose,
-}: {
-  user: UserProfile;
-  onClose: () => void;
-}) {
+export default function ModalProfile({ onClose }: { onClose: () => void }) {
   const { state } = useChat();
   return (
     <div
@@ -58,13 +53,13 @@ export default function ModalProfile({
             <span
               className={`
               inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm
-              ${user.status === "online" ? "bg-green-500/20 text-green-500" : "bg-gray-500/20 text-gray-400"}
+              ${state.selectedUser?.is_online ? "bg-green-500/20 text-green-500" : "bg-gray-500/20 text-gray-400"}
             `}
             >
               <span
-                className={`w-2 h-2 rounded-full ${user.status === "online" ? "bg-green-500" : "bg-gray-400"}`}
+                className={`w-2 h-2 rounded-full ${state.selectedUser?.is_online ? "bg-green-500" : "bg-gray-400"}`}
               />
-              {user.status === "online" ? "آنلاین" : "آفلاین"}
+              {state.selectedUser?.is_online ? "آنلاین" : "آفلاین"}
             </span>
           </div>
 
@@ -94,14 +89,20 @@ export default function ModalProfile({
 
             <div className="flex items-center gap-3">
               <Calendar size={18} className="text-gray-400" />
-              <span className="text-sm">عضویت از {user.joinDate}</span>
+              <span className="text-sm">
+                عضویت از {convertToPersianDate(state.selectedUser?.created_at)}
+              </span>
             </div>
           </div>
 
           {/* دکمه‌ها */}
           <div className="flex gap-3 mt-6">
-            <Button className="flex-1 py-2">پیام</Button>
-            <Button className="flex-1 py-2">تماس</Button>
+            <Button className="flex-1 py-2" onClick={onClose}>
+              پیام
+            </Button>
+            <Button className="flex-1 py-2" disabled={true}>
+              تماس
+            </Button>
           </div>
         </div>
       </div>

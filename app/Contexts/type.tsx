@@ -7,6 +7,9 @@ export interface UserProfile {
   avatar_url?: string;
   bio?: string;
   created_at: string;
+  is_online?: boolean;
+  last_seen?: string;
+  conversation_id?: string;
 }
 export interface AuthContextType {
   user: UserProfile | null;

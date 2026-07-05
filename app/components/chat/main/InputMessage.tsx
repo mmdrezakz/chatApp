@@ -3,7 +3,7 @@
 import { useAuth } from "@/app/Contexts/AuthContent";
 import { useChat } from "@/app/Contexts/ChatContext/ChatContext";
 import { sendMessage, updateMessage } from "@/app/lib/supabase/messages";
-import { Paperclip } from "lucide-react";
+
 import { useEffect, useRef, useState } from "react";
 
 export default function InputMessage() {
@@ -33,27 +33,17 @@ export default function InputMessage() {
         type: "SET_EDITING_MESSAGE",
         payload: null,
       });
-
       setContent("");
 
       return;
     }
-    const newMessage = await sendMessage(
-      state.conversationId,
-      user.id,
-      content.trim(),
-    );
-
-    dispatch({
-      type: "ADD_MESSAGE",
-      payload: newMessage,
-    });
+    await sendMessage(state.conversationId, user.id, content.trim());
     setContent("");
   }
   return (
     <form
       onSubmit={handleSubmitMessage}
-      className="flex gap-2 p-4 border-border border-t"
+      className="flex gap-2 p-4 border-border border-t shrink-0"
     >
       <div className="relative rounded-xl w-full">
         <input

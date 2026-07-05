@@ -11,6 +11,8 @@
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.110.0",
+    "@types/date-fns": "^2.5.3",
+    "jalaali-js": "^2.0.0",
     "lucide": "^1.23.0",
     "lucide-react": "^1.23.0",
     "next": "16.2.9",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/jalaali-js": "^1.2.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

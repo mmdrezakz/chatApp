@@ -6,7 +6,7 @@ import BackgroundWrapper from "../../register/backgroundWrapper";
 
 export default function MainAreaChat() {
   return (
-    <main className="flex flex-col flex-1 min-h-screen">
+    <main className="flex flex-col flex-1 h-screen">
       <HeaderChat />
 
       <Message />

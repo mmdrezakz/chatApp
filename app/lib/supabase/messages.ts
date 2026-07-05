@@ -15,9 +15,12 @@ export async function sendMessage(
     .select()
     .single();
 
-  if (error) {
-    throw error;
-  }
+  if (error) throw error;
+
+  await supabase.from("message_reads").insert({
+    message_id: data.id,
+    user_id: senderId,
+  });
 
   return data;
 }
