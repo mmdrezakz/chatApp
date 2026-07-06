@@ -7,7 +7,7 @@ type LogoutButtonProps = {
 
 export default function LogoutButton({ onLogout }: LogoutButtonProps) {
   return (
-    <Button onClick={onLogout} className="mx-3 my-2 px-1 py-1 w-fit">
+    <Button onClick={onLogout} className="mx-3 my-2 px-4 py-2.5 w-fit">
       <LogOut />
     </Button>
   );

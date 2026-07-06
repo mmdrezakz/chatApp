@@ -8,7 +8,7 @@ export default function SettingIcon({
   ShowSetting,
 }: SettingIconProps) {
   return (
-    <Button onClick={handleShowSetting} className="mx-3 my-2 px-1 py-1 w-fit">
+    <Button onClick={handleShowSetting} className="mx-3 my-2 px-4 py-2.5 w-fit">
       {ShowSetting ? <ArrowBigLeft /> : <Settings />}
     </Button>
   );

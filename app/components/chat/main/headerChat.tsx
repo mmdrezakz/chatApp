@@ -54,8 +54,8 @@ export default function HeaderChat() {
               {state?.selectedUser?.avatar_url ? (
                 <Image
                   className="w-full h-full object-cover"
-                  width={44}
-                  height={44}
+                  width={70}
+                  height={70}
                   src={state.selectedUser.avatar_url}
                   alt={state.selectedUser.username}
                 />
@@ -69,21 +69,21 @@ export default function HeaderChat() {
             {/* Online Status Indicator on Avatar */}
           </div>
           <div className="gap-2 sm:gap-3 grid grid-cols-1 md:grid-cols-2">
-            <h3 className="flex justify-center items-center bg-card px-2 sm:px-4 py-1 sm:py-2 md:py-1.5 rounded-2xl font-semibold text-xs sm:text-sm md:text-base">
+            <h3 className="flex justify-center items-center bg-card shadow-shadow shadow-xs px-2 sm:px-4 py-1 sm:py-2 md:py-1.5 rounded-2xl font-semibold text-xs sm:text-sm md:text-base">
               <span className="w-full max-w-30 xs:max-w-[160px] sm:max-w-none text-center truncate">
                 {state.selectedUser?.username}
               </span>
             </h3>
             <div className="text-[8px] text-muted-foreground xs:text-[10px] sm:text-xs">
               {state.selectedUser.is_online ? (
-                <div className="flex justify-center items-center gap-1 xs:gap-1.5 sm:gap-2 bg-card/80 px-2 xs:px-3 sm:px-4 py-1 xs:py-1.5 sm:py-2 rounded-2xl">
+                <div className="flex justify-center items-center gap-1 xs:gap-1.5 sm:gap-2 bg-card/80 shadow-shadow shadow-xs px-2 xs:px-3 sm:px-4 py-1 xs:py-1.5 sm:py-2 rounded-2xl">
                   <div className="bg-emerald-500 shadow-sm rounded-full ring-2 ring-background w-2 xs:w-2.5 sm:w-3.5 h-2 xs:h-2.5 sm:h-3.5 animate-pulse"></div>
                   <span className="text-[10px] xs:text-xs sm:text-sm">
                     آنلاین
                   </span>
                 </div>
               ) : (
-                <div className="flex flex-wrap justify-center items-center gap-0.5 xs:gap-1 sm:gap-2 bg-card/80 px-1.5 xs:px-2 sm:px-4 py-1 xs:py-1.5 sm:py-2 rounded-2xl h-full">
+                <div className="flex flex-wrap justify-center items-center gap-0.5 xs:gap-1 sm:gap-2 bg-card/80 shadow-shadow shadow-xs px-1.5 xs:px-2 sm:px-4 py-1 xs:py-1.5 sm:py-2 rounded-2xl h-full">
                   <p className="text-[8px] xs:text-[10px] sm:text-xs whitespace-nowrap">
                     آخرین بازدید :
                   </p>
@@ -99,7 +99,7 @@ export default function HeaderChat() {
         </div>
 
         <Button
-          className="top-1/2 left-5 absolute -translate-y-1/2"
+          className="top-1/2 left-5 absolute px-4 py-2.5 -translate-y-1/2"
           type="button"
         >
           <ChevronLeft />

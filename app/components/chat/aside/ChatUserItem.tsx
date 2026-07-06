@@ -16,15 +16,15 @@ export default function ChatUserItem({ user, unreadCount, onClick }: Props) {
   return (
     <div
       onClick={onClick}
-      className="group relative flex items-center gap-3 hover:bg-linear-to-r hover:from-primary/10 hover:to-primary/5 px-3 py-2.5 border-2 border-transparent hover:border-primary/20 rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer"
+      className="group relative flex items-center gap-3 hover:bg-linear-to-r hover:from-primary/10 hover:to-primary/5 px-3 py-2.5 border-b border-b-foreground/20 hover:border-b-foreground/50 rounded-sm hover:scale-[1.02] active:scale-[0.98] transition-all duration-400 cursor-pointer"
     >
       <div className="relative shrink-0">
         <div className="bg-linear-to-br from-primary/20 to-primary/5 shadow-sm group-hover:shadow-md rounded-full ring-2 ring-primary/10 group-hover:ring-primary/30 w-11 h-11 overflow-hidden transition-all duration-300">
           {user.avatar_url ? (
             <Image
               className="w-full h-full object-cover"
-              width={44}
-              height={44}
+              width={65}
+              height={65}
               src={user.avatar_url}
               alt={user.username}
             />

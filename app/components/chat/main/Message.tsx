@@ -9,6 +9,7 @@ import { useRef, useState } from "react";
 import { useMessageRealtime } from "../../hooks/chat/useMessageRealtime";
 import { useMessageScroll } from "../../hooks/chat/useMessageScroll";
 import MessageBubble from "./MessageBubble";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 export default function Message() {
   const { state, dispatch } = useChat();
@@ -29,18 +30,25 @@ export default function Message() {
 
   if (state.loadingMessages) {
     return (
-      <section className="flex flex-1 justify-center items-center gap-2 bg-card/80 min-h-0">
+      <section className="flex flex-col flex-1 justify-center items-center gap-2 bg-card/80 min-h-0">
         <div className="animate-spin">
           <LoaderCircle className="text-blue-500" size={60} />
         </div>
-        <p>لطفا منتظر بمانید .</p>
+        <p>لطفا منتظر بمانید ...</p>
       </section>
     );
   }
   if (!state.selectedUser) {
     return (
-      <section className="flex flex-1 justify-center items-center bg-card/80 min-h-0">
-        یک گفتگو انتخاب کنید
+      <section className="relative flex flex-col justify-center items-center bg-card/80 min-h-0">
+        <DotLottieReact
+          src="https://lottie.host/000cc780-48e2-4a53-9fbb-f055e3cf0673/mB3sFhTqGd.lottie"
+          loop
+          autoplay
+        />
+        <p className="bottom-1/4 left-1/2 absolute bg-card/40 px-5 py-1 rounded-2xl -translate-x-1/2 -translate-y-1/2">
+          یک گفتگو انتخاب کنید
+        </p>
       </section>
     );
   }

@@ -6,6 +6,7 @@ export default function AsideWrapper({
   children,
   text,
   className = "",
+  logo = "",
 }: AsideWrapperProps) {
   const { user } = useAuth();
   return (
@@ -27,7 +28,10 @@ export default function AsideWrapper({
           </div>
         )}
       </div>
-      <h2 className="font-bold text-lg">{text}</h2>
+      <div className="flex justify-center items-center gap-2">
+        {logo}
+        <h2 className="font-bold text-lg">{text}</h2>
+      </div>
       {children}
     </header>
   );

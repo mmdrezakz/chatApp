@@ -83,12 +83,12 @@ export default function ModalProfile({ onClose }: { onClose: () => void }) {
             </div>
 
             <div className="flex items-center gap-3">
-              <Mail size={18} className="" />
+              <Mail size={18} />
               <span className="text-sm">{state.selectedUser?.email}</span>
             </div>
 
             <div className="flex items-center gap-3">
-              <Calendar size={18} className="text-gray-400" />
+              <Calendar size={18} />
               <span className="text-sm">
                 عضویت از {convertToPersianDate(state.selectedUser?.created_at)}
               </span>
