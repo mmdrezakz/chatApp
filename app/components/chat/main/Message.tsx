@@ -40,7 +40,7 @@ export default function Message() {
   }
   if (!state.selectedUser) {
     return (
-      <section className="relative flex flex-col justify-center items-center bg-card/80 min-h-0">
+      <section className="relative flex flex-col flex-1 justify-center items-center bg-card/80 min-h-0">
         <DotLottieReact
           src="https://lottie.host/000cc780-48e2-4a53-9fbb-f055e3cf0673/mB3sFhTqGd.lottie"
           loop
