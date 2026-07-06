@@ -2,8 +2,8 @@
 import { useState } from "react";
 import Aside from "./components/chat/aside/Aside";
 import MainAreaChat from "./components/chat/main/MainAreaChat";
-import Button from "./components/ui/Button";
-import { PanelRightClose, PanelRightOpen } from "lucide-react";
+
+import { PanelRightClose } from "lucide-react";
 import BackgroundWrapper from "./components/register/backgroundWrapper";
 
 export default function Page() {

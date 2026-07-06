@@ -26,6 +26,8 @@ export async function sendMessage(
 }
 
 export async function getMessages(conversationId: string) {
+  //3
+  console.time("messages-query");
   const { data, error } = await supabase
     .from("messages")
     .select("*")
@@ -33,7 +35,9 @@ export async function getMessages(conversationId: string) {
     .order("created_at", {
       ascending: true,
     });
+  console.timeEnd("messages-query");
 
+  console.log("messages count", data?.length);
   if (error) {
     throw error;
   }

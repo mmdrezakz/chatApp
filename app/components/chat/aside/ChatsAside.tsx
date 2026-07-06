@@ -48,24 +48,35 @@ export default function ChatsAside({
     });
 
     try {
+      //1
+      console.time("openConversation");
       const conversationId = await openConversation(user.id, selectedUser.id);
+      console.timeEnd("openConversation");
 
       dispatch({
         type: "SET_CONVERSATION",
         payload: conversationId,
       });
 
+      //2
+      console.time("getMessages");
       const messages = await getMessages(conversationId);
-      await markMessagesAsRead(conversationId, user.id);
+      console.timeEnd("getMessages");
+
+      //3
+      console.time("markMessagesAsRead");
+      //awaitرا برداشتم تا زود تر لود شود مسیج ها
+      markMessagesAsRead(conversationId, user.id).catch(console.error);
       dispatch({
         type: "SET_MESSAGES",
         payload: messages,
       });
-      await markMessagesAsRead(conversationId, user.id);
+
       dispatch({
         type: "CLEAR_UNREAD",
         payload: selectedUser.id,
       });
+      console.timeEnd("markMessagesAsRead");
     } catch (error: any) {
       console.error("Open chat failed:", error);
       toast.error("خطا در باز کردن گفتگو");

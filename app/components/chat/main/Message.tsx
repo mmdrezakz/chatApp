@@ -2,7 +2,7 @@
 import { useAuth } from "@/app/Contexts/AuthContent";
 import { useChat } from "@/app/Contexts/ChatContext/ChatContext";
 import { deleteMessage } from "@/app/lib/supabase/messages";
-import { LoaderCircle, Pencil, Trash } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import ConfirmModal from "../../ui/ConfirmModal";
 import { useRef, useState } from "react";
 
