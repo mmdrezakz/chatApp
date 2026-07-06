@@ -13,12 +13,23 @@ export function useLoadUsers() {
     if (!user) return;
     const UserId = user.id;
     async function loadUsers() {
-      const data = await getAllUsers(UserId);
-
       dispatch({
-        type: "SET_USERS",
-        payload: data,
+        type: "SET_LOADING_USERS",
+        payload: true,
       });
+      try {
+        const data = await getAllUsers(UserId);
+
+        dispatch({
+          type: "SET_USERS",
+          payload: data,
+        });
+      } finally {
+        dispatch({
+          type: "SET_LOADING_USERS",
+          payload: false,
+        });
+      }
     }
 
     loadUsers();

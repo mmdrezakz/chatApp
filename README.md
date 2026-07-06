@@ -29,16 +29,16 @@
 
 ## 🛠️ تکنولوژی‌ها
 
-| بخش | تکنولوژی |
-|-----|----------|
-| فرانت‌اند | Next.js 16.2.9 + React 19.2.4 |
-| استایل | Tailwind CSS 4 |
-| مدیریت حالت | Context API + useReducer |
+| بخش              | تکنولوژی                         |
+| ---------------- | -------------------------------- |
+| فرانت‌اند        | Next.js 16.2.9 + React 19.2.4    |
+| استایل           | Tailwind CSS 4                   |
+| مدیریت حالت      | Context API + useReducer         |
 | بک‌اند و دیتابیس | Supabase (PostgreSQL + Realtime) |
-| احراز هویت | Supabase Auth |
-| نوتیفیکیشن | React Hot Toast |
-| آیکون‌ها | Lucide React |
-| تاریخ شمسی | Jalaali JS |
+| احراز هویت       | Supabase Auth                    |
+| نوتیفیکیشن       | React Hot Toast                  |
+| آیکون‌ها         | Lucide React                     |
+| تاریخ شمسی       | Jalaali JS                       |
 
 ---
 
@@ -59,3 +59,4 @@
 ```bash
 git clone https://github.com/username/chat-app.git
 cd chat-app
+```

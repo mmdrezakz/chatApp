@@ -15,6 +15,7 @@ import { useLoadUsers } from "../../hooks/chat/useLoadUsers";
 import { useOnlineUsers } from "../../hooks/chat/useOnlineUsers";
 import { useUnreadMessages } from "../../hooks/chat/useUnreadMessages";
 import { markMessagesAsRead } from "@/app/lib/supabase/messageReads";
+import ChatUserSkeleton from "./ChatUserSkeleton";
 
 export default function ChatsAside({
   setShowAside,
@@ -49,34 +50,56 @@ export default function ChatsAside({
 
     try {
       //1
-      console.time("openConversation");
-      const conversationId = await openConversation(user.id, selectedUser.id);
-      console.timeEnd("openConversation");
-
+      const cachedConversationId = state.conversationCache[selectedUser.id];
+      const conversationId =
+        cachedConversationId ??
+        (await openConversation(user.id, selectedUser.id));
+      if (!cachedConversationId) {
+        dispatch({
+          type: "CACHE_CONVERSATION",
+          payload: {
+            userId: selectedUser.id,
+            conversationId,
+          },
+        });
+      }
+      const cachedMessages = state.messageCache[conversationId];
       dispatch({
         type: "SET_CONVERSATION",
         payload: conversationId,
       });
 
       //2
-      console.time("getMessages");
-      const messages = await getMessages(conversationId);
-      console.timeEnd("getMessages");
+      //گرفتن از کش
+      if (cachedMessages) {
+        dispatch({
+          type: "SET_MESSAGES",
+          payload: cachedMessages,
+        });
+      }
 
-      //3
-      console.time("markMessagesAsRead");
-      //awaitرا برداشتم تا زود تر لود شود مسیج ها
-      markMessagesAsRead(conversationId, user.id).catch(console.error);
+      const messages = await getMessages(conversationId);
+
       dispatch({
         type: "SET_MESSAGES",
         payload: messages,
       });
 
       dispatch({
+        type: "CACHE_MESSAGES",
+        payload: {
+          conversationId,
+          messages,
+        },
+      });
+      //awaitرا برداشتم تا زود تر لود شود مسیج ها
+      markMessagesAsRead(conversationId, user.id).catch(console.error);
+
+      // });
+      dispatch({
         type: "CLEAR_UNREAD",
         payload: selectedUser.id,
       });
-      console.timeEnd("markMessagesAsRead");
     } catch (error: any) {
       console.error("Open chat failed:", error);
       toast.error("خطا در باز کردن گفتگو");
@@ -88,6 +111,15 @@ export default function ChatsAside({
       setOpeningChat(false);
     }
   };
+  if (state.loadingUsers) {
+    return (
+      <div className="flex-1">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <ChatUserSkeleton key={i} />
+        ))}
+      </div>
+    );
+  }
   return (
     <div className="flex-1 space-y-1.5 px-2 py-2 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-primary/20 hover:scrollbar-thumb-primary/30">
       {state.users.map((u) => {

@@ -16,6 +16,9 @@ export interface ChatState {
   editingMessage: MessageType | null;
   unreadCounts: Record<string, number>;
   loadingMessages: boolean;
+  loadingUsers: boolean;
+  messageCache: Record<string, MessageType[]>;
+  conversationCache: Record<string, string>;
 }
 export type ChatAction =
   | {
@@ -72,4 +75,22 @@ export type ChatAction =
   | {
       type: "SET_UNREAD_COUNTS";
       payload: Record<string, number>;
+    }
+  | {
+      type: "CACHE_MESSAGES";
+      payload: {
+        conversationId: string;
+        messages: MessageType[];
+      };
+    }
+  | {
+      type: "CACHE_CONVERSATION";
+      payload: {
+        userId: string;
+        conversationId: string;
+      };
+    }
+  | {
+      type: "SET_LOADING_USERS";
+      payload: boolean;
     };

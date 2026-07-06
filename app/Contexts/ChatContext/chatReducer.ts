@@ -5,9 +5,12 @@ export const initialState: ChatState = {
   selectedUser: null,
   conversationId: null,
   messages: [],
+  messageCache: {},
   editingMessage: null,
   unreadCounts: {},
   loadingMessages: false,
+  loadingUsers: true,
+  conversationCache: {},
 };
 
 export function chatReducer(state: ChatState, action: ChatAction): ChatState {
@@ -99,6 +102,28 @@ export function chatReducer(state: ChatState, action: ChatAction): ChatState {
         ...state,
         unreadCounts: action.payload,
       };
+    case "CACHE_MESSAGES":
+      return {
+        ...state,
+        messageCache: {
+          ...state.messageCache,
+          [action.payload.conversationId]: action.payload.messages,
+        },
+      };
+    case "CACHE_CONVERSATION":
+      return {
+        ...state,
+        conversationCache: {
+          ...state.conversationCache,
+          [action.payload.userId]: action.payload.conversationId,
+        },
+      };
+    case "SET_LOADING_USERS":
+      return {
+        ...state,
+        loadingUsers: action.payload,
+      };
+
     default:
       return state;
   }
