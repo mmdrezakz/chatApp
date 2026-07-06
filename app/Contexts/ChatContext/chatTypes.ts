@@ -6,6 +6,7 @@ export interface MessageType {
   sender_id: string;
   content: string;
   created_at: string;
+  isRead?: boolean;
 }
 
 export interface ChatState {
@@ -93,4 +94,8 @@ export type ChatAction =
   | {
       type: "SET_LOADING_USERS";
       payload: boolean;
+    }
+  | {
+      type: "MARK_MESSAGE_READ";
+      payload: string;
     };

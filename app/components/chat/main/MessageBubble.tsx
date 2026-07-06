@@ -54,7 +54,13 @@ export default function MessageBubble({
                 })}
               </span>
 
-              <span className="text-blue-800 text-xs">✓✓</span>
+              <span
+                className={`text-xs ${
+                  message.isRead ? "text-blue-600" : "text-gray-400"
+                }`}
+              >
+                {message.isRead ? "✓✓" : "✓"}
+              </span>
             </div>
           </div>
         </div>

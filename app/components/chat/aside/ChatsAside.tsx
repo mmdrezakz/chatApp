@@ -16,6 +16,7 @@ import { useOnlineUsers } from "../../hooks/chat/useOnlineUsers";
 import { useUnreadMessages } from "../../hooks/chat/useUnreadMessages";
 import { markMessagesAsRead } from "@/app/lib/supabase/messageReads";
 import ChatUserSkeleton from "./ChatUserSkeleton";
+import { useMessageReadRealtime } from "../../hooks/chat/useMessageReadRealtime";
 
 export default function ChatsAside({
   setShowAside,
@@ -28,6 +29,7 @@ export default function ChatsAside({
   useLoadUsers();
   useOnlineUsers();
   useUnreadMessages();
+  useMessageReadRealtime();
   //OpenChat
   const handleOpenChat = async (selectedUser: UserProfile) => {
     if (!user || openingChat) return;

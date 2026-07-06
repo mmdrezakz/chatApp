@@ -30,7 +30,14 @@ export async function getMessages(conversationId: string) {
 
   const { data, error } = await supabase
     .from("messages")
-    .select("*")
+    .select(
+      `
+  *,
+  message_reads(
+    user_id
+  )
+`,
+    )
     .eq("conversation_id", conversationId)
     .order("created_at", {
       ascending: true,
@@ -40,7 +47,10 @@ export async function getMessages(conversationId: string) {
     throw error;
   }
 
-  return data;
+  return data.map((message) => ({
+    ...message,
+    isRead: message.message_reads?.length > 0,
+  }));
 }
 export async function updateMessage(messageId: string, content: string) {
   const { data, error } = await supabase

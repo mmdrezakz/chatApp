@@ -123,6 +123,28 @@ export function chatReducer(state: ChatState, action: ChatAction): ChatState {
         ...state,
         loadingUsers: action.payload,
       };
+    case "MARK_MESSAGE_READ": {
+      const updatedMessages = state.messages.map((msg) =>
+        msg.id === action.payload
+          ? {
+              ...msg,
+              isRead: true,
+            }
+          : msg,
+      );
+
+      return {
+        ...state,
+        messages: updatedMessages,
+
+        messageCache: state.conversationId
+          ? {
+              ...state.messageCache,
+              [state.conversationId]: updatedMessages,
+            }
+          : state.messageCache,
+      };
+    }
 
     default:
       return state;
